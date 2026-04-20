@@ -18,6 +18,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
                 <li><a href="#education">Education</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -208,7 +209,79 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2>My Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-preview">
+                        <iframe src="https://abdelrhmanh865.github.io/mini-task/" title="Mini Task Project" loading="lazy"></iframe>
+                        <div class="project-overlay">
+                            <a href="https://abdelrhmanh865.github.io/mini-task/" target="_blank" class="btn btn-primary">View Live</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tag">HTML / CSS</div>
+                        <h3 class="project-title">Cards UI Component</h3>
+                        <p class="project-desc">A responsive card layout component demonstrating clean HTML and CSS design skills with modern layout techniques.</p>
+                        <a href="https://abdelrhmanh865.github.io/mini-task/" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-preview">
+                        <iframe src="https://abdelrhmanh865.github.io/rev/" title="Rev Project" loading="lazy"></iframe>
+                        <div class="project-overlay">
+                            <a href="https://abdelrhmanh865.github.io/rev/" target="_blank" class="btn btn-primary">View Live</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tag">HTML / CSS / JS</div>
+                        <h3 class="project-title">Fokir — Portfolio Template</h3>
+                        <p class="project-desc">A full-featured personal portfolio website template with sections for about, services, portfolio, testimonials, and contact.</p>
+                        <a href="https://abdelrhmanh865.github.io/rev/" target="_blank" class="project-link">View Project →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Section -->
+    <section id="message" class="message-section">
+        <div class="container">
+            <h2>Send Me a Message</h2>
+            <p class="message-subtitle">Have a question or a project in mind? Drop a message and I'll get back to you.</p>
+            <div class="message-form-wrapper">
+                <form id="contactForm" class="message-form" onsubmit="sendMessage(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="senderName">Your Name</label>
+                            <input type="text" id="senderName" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="senderEmail">Your Email</label>
+                            <input type="email" id="senderEmail" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageSubject">Subject</label>
+                        <input type="text" id="messageSubject" placeholder="Project Inquiry" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageBody">Message</label>
+                        <textarea id="messageBody" rows="6" placeholder="Tell me about your project or just say hello..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-send" id="sendBtn">
+                        <span id="btnText">Send Message</span>
+                        <span id="btnLoader" style="display:none;">Sending...</span>
+                    </button>
+                    <div id="formStatus" class="form-status"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
     <footer>
         <div class="container">
             <p>&copy; 2025 Abdelrhman Hany. All rights reserved.</p>
@@ -217,6 +290,54 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
        
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS — replace these with your real EmailJS credentials
+        // Sign up free at https://www.emailjs.com and create a service + template
+        const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
+        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz789'
+        const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // e.g. 'user_XXXXXXXXXXXX'
+
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
+        function sendMessage(e) {
+            e.preventDefault();
+            const btn      = document.getElementById('sendBtn');
+            const btnText  = document.getElementById('btnText');
+            const btnLoader= document.getElementById('btnLoader');
+            const status   = document.getElementById('formStatus');
+
+            btnText.style.display  = 'none';
+            btnLoader.style.display= 'inline';
+            btn.disabled = true;
+            status.textContent = '';
+            status.className   = 'form-status';
+
+            const params = {
+                from_name   : document.getElementById('senderName').value,
+                from_email  : document.getElementById('senderEmail').value,
+                subject     : document.getElementById('messageSubject').value,
+                message     : document.getElementById('messageBody').value,
+                to_email    : 'abdelrhamnh865@gmail.com'
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+                .then(() => {
+                    status.textContent = '✓ Message sent! I\'ll get back to you soon.';
+                    status.classList.add('form-status--success');
+                    document.getElementById('contactForm').reset();
+                })
+                .catch(() => {
+                    status.textContent = '✗ Something went wrong. Please try emailing me directly at abdelrhamnh865@gmail.com';
+                    status.classList.add('form-status--error');
+                })
+                .finally(() => {
+                    btnText.style.display  = 'inline';
+                    btnLoader.style.display= 'none';
+                    btn.disabled = false;
+                });
+        }
+    </script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
